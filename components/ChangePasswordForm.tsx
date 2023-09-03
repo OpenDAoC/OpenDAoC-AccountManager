@@ -36,7 +36,7 @@ export default function ChangePasswordForm({ onPasswordChanged, onCancelClicked 
       setIsChanging(true);
       const encryptedPassword = cryptPassword(newPassword);
       try {
-        const response = await axios.post('/api/change-password', { username: user && user.username, newPassword: encryptedPassword });
+        const response = await axios.post('/api/update-password', { username: user && user.username, newPassword: encryptedPassword });
         if (response.data.success) {
           setFeedbackMessage('Password changed successfully!');
           setTimeout(() => {
