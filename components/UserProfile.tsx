@@ -14,7 +14,7 @@ export default function UserProfile() {
             {user && user.discordId ? (
               <p className="text-sm">Discord: {user.discordName}</p>
             ) : (
-              <button onClick={handleLinkDiscord} className="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
+              <button onClick={handleLinkDiscord} className="mt-4 bg-indigo-700 text-white px-4 py-2 rounded">
                 Link Discord Account
               </button>
             )}

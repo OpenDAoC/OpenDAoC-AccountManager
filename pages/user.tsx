@@ -23,11 +23,11 @@ export default function UserPage() {
 
   return (
     <Layout>
-    <div>
+    <div className='flex-grow flex flex-col justify-center items-center'>
       {user && user.username && (
         <>
           <UserProfile />
-          <button onClick={handleChangePasswordClick} className="mt-4 bg-gray-500 text-white px-4 py-2 rounded">
+          <button onClick={handleChangePasswordClick} className="mt-4 bg-yellow-500 text-black px-4 py-2 rounded">
             Change Password
           </button>
         </>
