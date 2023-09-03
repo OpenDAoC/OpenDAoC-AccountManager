@@ -4,6 +4,7 @@ module.exports = {
     siteUrl: "https://account.opendaoc.com", // URL of your site
     siteTitle: "OpenDAoC | Account Manager", // Title of your site
     siteDescription: "OpenDAoC Account Manager allows you to link your OpenDAoC account to your Discord for easy password recovery.", // Description of your site
+    siteFooter: "OpenDAoC Account Manager", // Footer of your site
     logoPath: "/logo.svg", // Path to your logo file (relative to the public directory).
     // Database settings
     DATABASE_HOST: 'localhost', // Database host

@@ -12,6 +12,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <div className="flex min-h-screen flex-col justify-between w-full">
       <Head>
         <title>{config.siteTitle}</title>
+        <meta name="description" content={config.siteDescription} />
+        <link rel="icon" href="/logo.svg" />
       </Head>
       <Header />
       <div className="flex flex-col items-center">{children}</div>
