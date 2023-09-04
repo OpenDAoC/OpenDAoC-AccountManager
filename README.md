@@ -1,38 +1,66 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# OpenDAoC Account Manager
+
+OpenDAoC Account Manager allows you to link your OpenDAoC account to your Discord for easy password recovery.
+
+## Configuration
+
+To set up the OpenDAoC Account Manager, copy `.env.example` to `.env` and adjust the options:
+
+- **General Settings**:
+  - `SERVER_NAME`: Name of your server (e.g., "OpenDAoC").
+  - `SITE_URL`: URL of your site (e.g., "https://account.opendaoc.com").
+  - `SITE_TITLE`: Title of your site.
+  - `SITE_DESCRIPTION`: Description of your site.
+  - `SITE_FOOTER`: Footer of your site.
+  - `LOGO_PATH`: Path to your logo file (relative to the public directory).
+
+- **Theme Settings**:
+  - `THEME_FOREGROUND`: Foreground color in RGB format.
+  - `THEME_BACKGROUND_LIGHT`: Light background color in RGB format for the top of the gradient.
+  - `THEME_BACKGROUND_DARK`: Dark background color in RGB format for the bottom of the gradient.
+
+- **Toast Notifications Settings**:
+  - `TOAST_DURATION`: Duration of the toast notification in seconds.
+
+- **Database Settings**:
+  - `DATABASE_HOST`: Database host.
+  - `DATABASE_USER`: Database user.
+  - `DATABASE_PASSWORD`: Database password.
+  - `DATABASE_NAME`: Database name.
+
+- **Password Settings**:
+  - `ENCRYPTION_KEY`: Used for encryption. Ensure it's random.
+  - `PROHIBITED_CHARACTERS`: Prohibited characters for passwords.
+  - `MIN_PASSWORD_LENGTH`: Minimum password length.
+  - `MAX_PASSWORD_LENGTH`: Maximum password length.
+
+- **Discord Settings**:
+  - `DISCORD_CLIENT_ID`: Discord client ID.
+  - `DISCORD_CLIENT_SECRET`: Discord client secret.
+
+Make sure to replace the example values with your actual configurations.
 
 ## Getting Started
 
-First, run the development server:
+### Local Development
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+1. Clone the repository
+2. Install dependencies with `npm install` or `yarn install` or `pnpm install`
+3. Copy `.env.example` to `.env` and adjust the options
+4. Run the development server with `npm run dev` or `yarn dev` or `pnpm dev`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000` with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Docker
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+<!-- A Docker image is available at [Docker Hub](https://hub.docker.com/r/opendaoc/account-manager).   -->
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+You can build the image yourself with the provided `Dockerfile`.  
+An example `docker-compose.yml` is available in the repository.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
 ## Learn More
+For more details on Next.js, the framework used in this project:
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+[Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+[Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
