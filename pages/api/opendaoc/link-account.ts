@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connection from '@/utils/db';
-import config from '@/config';
 import { containsProhibitedCharacters, cryptPassword } from '@/utils/auth';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {

@@ -1,15 +1,16 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useUser } from '@/contexts/UserContext';
-import { siteUrl, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET } from '@/config';
 import { setCookie } from '@/utils/cookie';
-import config from '@/config';
+import getConfig from 'next/config'
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
 const DiscordCallback = () => {
   const router = useRouter();
   const { setUser } = useUser();
+  const { publicRuntimeConfig } = getConfig();
+
 
   useEffect(() => {
     const code = router.query.code;
@@ -22,11 +23,11 @@ const DiscordCallback = () => {
     const fetchDiscordData = async () => {
       try {
         const tokenResponse = await axios.post('https://discord.com/api/oauth2/token', new URLSearchParams({
-          client_id: DISCORD_CLIENT_ID,
-          client_secret: DISCORD_CLIENT_SECRET,
+          client_id: publicRuntimeConfig.DISCORD_CLIENT_ID,
+          client_secret: publicRuntimeConfig.DISCORD_CLIENT_SECRET,
           grant_type: 'authorization_code',
           code: code as string,
-          redirect_uri: `${siteUrl}/auth/discord-callback`,
+          redirect_uri: `${publicRuntimeConfig.siteUrl}/auth/discord-callback`,
           scope: 'identify email',
         }), {
           headers: {
@@ -70,7 +71,7 @@ const DiscordCallback = () => {
 
           // Redirect to link account page
           router.push('/link-account');
-          toast.success(`Logged in with Discord. \n Please link or create your ${config.serverName} account.`)
+          toast.success(`Logged in with Discord. \n Please link or create your ${publicRuntimeConfig.serverName} account.`)
         }
 
       } catch (error) {

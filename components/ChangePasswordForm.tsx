@@ -39,7 +39,7 @@ export default function ChangePasswordForm({ onPasswordChanged, onCancelClicked 
     return (
       <>
         <h1 className="text-xl font-bold text-center text-white mb-4">Change Password</h1>
-        <div className="bg-gray-900 p-6 rounded-lg shadow-md w-full max-w-md">
+        <div className="bg-dark p-6 rounded-lg shadow-md w-full max-w-md">
             <form>
                 <input 
                     type="password" 

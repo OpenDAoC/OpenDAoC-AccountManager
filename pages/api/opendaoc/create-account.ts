@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import connection from '@/utils/db';
-import config from '@/config';
+import getConfig from 'next/config'
 import { containsProhibitedCharacters, cryptPassword } from '@/utils/auth';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -10,12 +10,14 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
   const { username, password, discordId, discordName } = req.body;
 
+  const { publicRuntimeConfig } = getConfig();
+
   if (username.length === 0) {
     return res.status(200).json({ success: false, message: 'Username cannot be empty.' });
   }
 
-  if (password.length < config.MIN_PASSWORD_LENGTH || password.length > config.MAX_PASSWORD_LENGTH) {
-    return res.status(200).json({ success: false, message: `Password must be between ${config.MIN_PASSWORD_LENGTH} and ${config.MAX_PASSWORD_LENGTH} characters.` });
+  if (password.length < publicRuntimeConfig.MIN_PASSWORD_LENGTH || password.length > publicRuntimeConfig.MAX_PASSWORD_LENGTH) {
+    return res.status(200).json({ success: false, message: `Password must be between ${publicRuntimeConfig.MIN_PASSWORD_LENGTH} and ${publicRuntimeConfig.MAX_PASSWORD_LENGTH} characters.` });
   }
 
   if (containsProhibitedCharacters(password)) {

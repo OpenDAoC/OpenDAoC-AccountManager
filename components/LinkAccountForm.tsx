@@ -36,10 +36,11 @@ export const LinkAccountForm: React.FC<LinkAccountFormProps> = ({ onLinkSuccess,
   return (
     <form onSubmit={handleLinkAccount}>
       <div className="form-group mb-4">
-        <label className="block mb-2">Username</label>
+        <label className="block mb-2 text-white font-semibold">Username</label>
         <input
           type="text"
           name="username"
+          placeholder='Username'
           autoComplete="on"
           className="form-control w-full p-2 border rounded bg-white text-black"
           value={username}
@@ -47,10 +48,11 @@ export const LinkAccountForm: React.FC<LinkAccountFormProps> = ({ onLinkSuccess,
         />
       </div>
       <div className="form-group mb-4">
-        <label className="block mb-2">Password</label>
+        <label className="block mb-2 text-white font-semibold">Password</label>
         <input
           type="password"
           name="password"
+          placeholder='Password'
           autoComplete="on"
           className="form-control w-full p-2 border rounded bg-white text-black"
           value={password}
@@ -58,7 +60,7 @@ export const LinkAccountForm: React.FC<LinkAccountFormProps> = ({ onLinkSuccess,
         />
       </div>
       <div className="form-group">
-        <input type="submit" className="btn btn-primary w-full p-2 rounded bg-blue-900 text-white hover:bg-blue-600 cursor-pointer" value="Link Account" />
+        <input type="submit" className="btn btn-primary w-full p-2 rounded bg-light text-white hover:bg-blue-600 cursor-pointer font-semibold" value="Link Account" />
       </div>
     </form>
   );

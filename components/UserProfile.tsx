@@ -8,7 +8,7 @@ export default function UserProfile() {
           <>
             <h1 className="text-xl font-bold text-center text-white mb-4">Welcome, {user && user.username}!</h1>
               {user && user.discordId && user.discordName && (
-                <span className="text-sm">Discord: {user && user.discordName}</span>
+                <span className="text-sm text-white">Discord: {user && user.discordName}</span>
               )}
           </>
     </div>

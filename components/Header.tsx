@@ -3,12 +3,24 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useUser } from '@/contexts/UserContext';
 import { removeCookie } from '@/utils/cookie';
-import config from '@/config';
+import { useEffect } from 'react';
+import getConfig from 'next/config'
 import axios from 'axios';
 
 export default function Header() {
   const { user, setUser } = useUser();
   const router = useRouter();
+  const { publicRuntimeConfig } = getConfig()
+
+
+  useEffect(() => {
+    const root = document.documentElement;
+
+    root.style.setProperty('--foreground-color', publicRuntimeConfig.theme.foreground);
+    root.style.setProperty('--background-light', publicRuntimeConfig.theme.backgroundLight);
+    root.style.setProperty('--background-dark', publicRuntimeConfig.theme.backgroundDark);
+  }, []);
+
 
   const handleLogout = async () => {
     try {
@@ -25,20 +37,20 @@ export default function Header() {
   };
 
   return (
-  <header className="w-full flex justify-between items-center p-4 bg-gray-900 sticky top-0">
+  <header className="w-full flex justify-between items-center p-4 sticky top-0">
       <span className="logo flex items-center">
         <Link href="/">
           <Image
-            src={config.logoPath}
-            alt={config.serverName + ' logo'}
-            title={config.serverName + ' logo'}
+            src={publicRuntimeConfig.logoPath}
+            alt={publicRuntimeConfig.serverName + ' logo'}
+            title={publicRuntimeConfig.serverName + ' logo'}
             width="50"
             height="50"
             priority
           />
          </Link>
          <Link href="/">
-          <span className="ml-2 text-white font-bold text-xl">{config.siteTitle}</span>
+          <span className="ml-2 text-white font-bold text-xl">{publicRuntimeConfig.siteTitle}</span>
           </Link>
 
       </span>

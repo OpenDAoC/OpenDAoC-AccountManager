@@ -1,5 +1,7 @@
 import crypto from 'crypto';
-import { PROHIBITED_CHARACTERS } from '@/config';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 function concatenateUint8Arrays(arr1: Uint8Array, arr2: Uint8Array): Uint8Array {
     const result = new Uint8Array(arr1.length + arr2.length);
@@ -39,7 +41,7 @@ export function cryptPassword(pass: string): string {
 }
 
 export function containsProhibitedCharacters(password: string): boolean {
-    for (let char of PROHIBITED_CHARACTERS) {
+    for (let char of publicRuntimeConfig.PROHIBITED_CHARACTERS) {
       if (password.includes(char)) {
         return true;
       }

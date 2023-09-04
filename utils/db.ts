@@ -1,11 +1,13 @@
 import mysql from 'mysql2';
-import config from '../config';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 const connection = mysql.createConnection({
-  host: config.DATABASE_HOST,
-  user: config.DATABASE_USER,
-  password: config.DATABASE_PASSWORD,
-  database: config.DATABASE_NAME,
+  host: publicRuntimeConfig.DATABASE_HOST,
+  user: publicRuntimeConfig.DATABASE_USER,
+  password: publicRuntimeConfig.DATABASE_PASSWORD,
+  database: publicRuntimeConfig.DATABASE_NAME,
 });
 
 connection.connect((err) => {

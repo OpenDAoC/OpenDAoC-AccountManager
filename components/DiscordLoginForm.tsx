@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import getConfig from 'next/config'
 
 export default function LoginForm() {
   const router = useRouter();
@@ -6,11 +7,17 @@ export default function LoginForm() {
     router.push('/api/auth/discord'); // Redirect to initiate the Discord OAuth2 flow
   };
 
+  const { publicRuntimeConfig } = getConfig();
+
   return (
-    <div className="bg-gray-900 p-6 rounded-lg shadow-md w-full max-w-md">
+    <>
+    <h1 className="text-xl font-bold text-center text-white mb-4">Login to manage your {publicRuntimeConfig.serverName} account</h1>
+
+    <div className="bg-dark p-6 rounded-lg shadow-md w-full max-w-md">
       <button onClick={handleDiscordLogin} className="w-full p-2 rounded bg-indigo-700 text-white hover:bg-indigo-600 cursor-pointer font-semibold">
         Login with Discord
       </button>
     </div>
+    </>
   );
 }

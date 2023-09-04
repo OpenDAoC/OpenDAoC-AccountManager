@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useUser } from '@/contexts/UserContext';
-import LoginForm from '@/components/LoginForm';
+import DiscordLoginForm from '@/components/DiscordLoginForm';
 import Layout from '@/components/Layout';
 
 
@@ -17,7 +17,7 @@ export default function Login() {
 
   return (
     <Layout>
-        <LoginForm />
+        <DiscordLoginForm />
     </Layout>
   );
 }

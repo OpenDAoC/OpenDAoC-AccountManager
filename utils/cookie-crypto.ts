@@ -1,7 +1,8 @@
 import crypto from 'crypto';
-import config from '@/config';
+import getConfig from 'next/config';
 
-const ENCRYPTION_KEY: string = config.ENCRYPTION_KEY;
+const { publicRuntimeConfig } = getConfig();
+const ENCRYPTION_KEY: string = publicRuntimeConfig.ENCRYPTION_KEY;
 const IV_LENGTH: number = 16; 
 
 function encrypt(text: string): string {

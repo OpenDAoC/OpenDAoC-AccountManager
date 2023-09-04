@@ -2,9 +2,12 @@ import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import { UserProvider } from '../contexts/UserContext';
 import { Toaster } from 'react-hot-toast';
-import config from '@/config';
+import getConfig from 'next/config'
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: AppProps) 
+{
+  const { publicRuntimeConfig } = getConfig()
+  
   return (
     <>
       <UserProvider>
@@ -15,7 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
       toastOptions={{
         // Define default options
         className: '',
-        duration: config.toastDuration * 1000,
+        duration: publicRuntimeConfig.toastDuration * 1000,
       }}
       />
     </>
