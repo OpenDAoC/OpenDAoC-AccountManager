@@ -11,8 +11,7 @@ export default function UserPage() {
   useEffect(() => {
     if (!loading) { // Only run this effect when loading is false
       if (!user || !user.username) {
-        console.log("user: " + JSON.stringify(user));
-        router.push('/login');
+        router.replace('/login');
       }
     }
   }, [user, loading]);
@@ -27,7 +26,7 @@ export default function UserPage() {
       {user && user.username && (
         <>
           <UserProfile />
-          <button onClick={handleChangePasswordClick} className="mt-4 bg-yellow-500 text-black px-4 py-2 rounded">
+          <button onClick={handleChangePasswordClick} className="mt-4 bg-yellow-500 text-black px-4 py-2 rounded font-semibold">
             Change Password
           </button>
         </>

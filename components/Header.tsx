@@ -1,12 +1,14 @@
 import Image from 'next/image';
-
-import config from '../config';
-import { useUser } from '../contexts/UserContext';
-import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useUser } from '@/contexts/UserContext';
+import { removeCookie } from '@/utils/cookie';
+import config from '@/config';
+import axios from 'axios';
 
 export default function Header() {
   const { user, setUser } = useUser();
+  const router = useRouter();
 
   const handleLogout = async () => {
     try {
@@ -14,6 +16,8 @@ export default function Header() {
       if (response.data.success) {
         // Clear user context and redirect to home page
         setUser({ username: null, discordId: null, discordName: null });
+        removeCookie();
+        router.push('/');
       }
     } catch (error) {
       console.error("Failed to logout:", error);
@@ -34,12 +38,12 @@ export default function Header() {
           />
          </Link>
          <Link href="/">
-          <span className="ml-2 text-white font-bold">{config.siteTitle}</span>
+          <span className="ml-2 text-white font-bold text-xl">{config.siteTitle}</span>
           </Link>
 
       </span>
-      {user && user.username && (
-        <button onClick={handleLogout} className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+      {user && user.discordName && (
+        <button onClick={handleLogout} className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded font-semibold">
           Logout
         </button>
       )}

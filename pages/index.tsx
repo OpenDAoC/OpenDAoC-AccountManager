@@ -8,10 +8,14 @@ export default function Home() {
 
   useEffect(() => {
     if (!loading) { // Only redirect once the loading state is false
-      if (user && user.username) {
-        router.push('/user');
-      } else {
-        router.push('/login');
+      if (user && user.username && user.discordName) {
+        router.replace('/user');
+      } 
+      else if (user && !user.username && user.discordName) {
+        router.replace('/link-account');
+      }
+      else {
+        router.replace('/login');
       }
     }
   }, [user, loading]);

@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import { PROHIBITED_CHARACTERS } from '@/config';
 
 function concatenateUint8Arrays(arr1: Uint8Array, arr2: Uint8Array): Uint8Array {
     const result = new Uint8Array(arr1.length + arr2.length);
@@ -32,7 +33,16 @@ export function cryptPassword(pass: string): string {
             cleanedHash = cleanedHash.slice(0, i) + cleanedHash.slice(i + 1, hashLen);
         }
     }
-
     const crypted: string = "##" + cleanedHash;
+    
     return crypted;
 }
+
+export function containsProhibitedCharacters(password: string): boolean {
+    for (let char of PROHIBITED_CHARACTERS) {
+      if (password.includes(char)) {
+        return true;
+      }
+    }
+    return false;
+};

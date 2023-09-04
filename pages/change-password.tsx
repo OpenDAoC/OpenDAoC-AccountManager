@@ -11,7 +11,7 @@ export default function ChangePasswordPage() {
   useEffect(() => {
     if (!loading) { // Only run this effect when loading is false
       if (!user || !user.username) {
-        router.push('/login');
+        router.replace('/login');
       }
     }
   }, [user, loading]);

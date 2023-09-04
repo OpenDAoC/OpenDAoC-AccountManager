@@ -13,7 +13,6 @@ connection.connect((err) => {
     console.error("Failed to connect to the database:", err);
     throw err;
   }
-  console.log('Connected to the MySQL database.');
 });
 
 export default connection;

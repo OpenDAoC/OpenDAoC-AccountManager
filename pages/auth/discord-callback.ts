@@ -1,20 +1,21 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useUser } from '@/contexts/UserContext';
-import axios from 'axios';
 import { siteUrl, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET } from '@/config';
-import Cookie from 'js-cookie';
-import { decrypt, encrypt } from '@/utils/cookie-crypto';
+import { setCookie } from '@/utils/cookie';
+import config from '@/config';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const DiscordCallback = () => {
   const router = useRouter();
-  const { user, setUser } = useUser();
+  const { setUser } = useUser();
 
   useEffect(() => {
     const code = router.query.code;
 
     if (!code) {
-      router.push('/login'); // Redirect to login page
+      router.replace('/login'); // Redirect to login page
       return;
     }
 
@@ -40,47 +41,37 @@ const DiscordCallback = () => {
         });
 
         const discordData = userResponse.data;
-
-        // Extract the necessary data from discordData
         const discordId = discordData.id;
         const discordName = `${discordData.username}`;
 
-        if (!user) {
-          router.push('/login'); // Redirect to login page
-          return;
-        }
+        // Check if the Discord ID exists in your database
+        const checkResponse = await axios.post('/api/opendaoc/check-discord', { discordId });
 
-        const userId = user.username;
+        if (checkResponse.data.success) {
+          // If the Discord ID exists, log the user in and update the context
+          const responseUsername = checkResponse.data.username;
+          const userData = { username: responseUsername, discordId, discordName };
 
-        // Call the /api/update-discord endpoint
-        const updateResponse = await axios.post('/api/update-discord', {
-          userId,
-          discordId,
-          discordName
-        });
+          // Update the context and cookie
+          setUser(userData);
+          setCookie(userData);
 
-        if (updateResponse.data.success) {          
-
-          // Update the user context
-          setUser({ username: userId, discordId: discordId, discordName: discordName });
-
-          // Update the user cookie
-          const existingUserData = Cookie.get('auth');
-          if (existingUserData) {
-            const decryptedData = decrypt(existingUserData);
-            const currentUserData = JSON.parse(decryptedData);
-            const newUserData = { ...currentUserData, discordId, discordName };
-            const encryptedData = encrypt(JSON.stringify(newUserData));
-            Cookie.set('auth', encryptedData);
-          }
-          
+          // Redirect to home page
+          router.push('/');
+          toast.success(`Welcome back, ${responseUsername}!`);
         } 
-        else 
+        else
         {
-          console.error("Failed to update Discord details:", updateResponse.data.message);
+          const userData = { username: null, discordId, discordName };
+          
+          // Update the context and cookie
+          setUser(userData);
+          setCookie(userData);
+
+          // Redirect to link account page
+          router.push('/link-account');
+          toast.success(`Logged in with Discord. \n Please link or create your ${config.serverName} account.`)
         }
-      
-        router.push('/');
 
       } catch (error) {
         console.error('Error during Discord OAuth:', error);

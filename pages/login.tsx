@@ -11,7 +11,7 @@ export default function Login() {
 
   useEffect(() => {
     if (user && user.username) {
-      router.push('/user');
+      router.replace('/user');
     }
   }, [user]);
 
