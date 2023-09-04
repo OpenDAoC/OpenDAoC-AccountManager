@@ -41,4 +41,7 @@ yarn-error.log
 .yarn/releases
 
 # Environment variables
-.env
+.env.development
+.env.test
+.env.local
+.env.example

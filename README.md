@@ -42,22 +42,41 @@ Make sure to replace the example values with your actual configurations.
 
 ## Getting Started
 
+### Prerequisites
+
+Apart from the obvious like Node.js and access to the server database, you will need to create a Discord application and enable the OAuth2 API.
+
+### Discord Application
+
+1. Go to the [Discord Developer Portal](https://discord.com/developers/applications) and create a new application.
+2. Go to the OAuth2 tab and add a redirect URL. This should be the URL of your site with `/api/auth/callback/discord` appended to it (e.g., `https://account.opendaoc.com/api/auth/callback/discord`).
+3. In the OAuth2 tab, copy the `client ID` and `client secret` and add them to your `.env` file.
+
 ### Local Development
 
-1. Clone the repository
+1. Clone the repository or download the [latest release](https://github.com/OpenDAoC/opendaoc-accountmanager/releases/latest)
 2. Install dependencies with `npm install` or `yarn install` or `pnpm install`
-3. Copy `.env.example` to `.env` and adjust the options
+3. Copy `.env.example` to `.env.local` and adjust the values
 4. Run the development server with `npm run dev` or `yarn dev` or `pnpm dev`
 
 Open `http://localhost:3000` with your browser to see the result.
 
 ### Docker
 
-<!-- A Docker image is available at [Docker Hub](https://hub.docker.com/r/opendaoc/account-manager).   -->
+A Docker image is available at on the [GitHub Registry](https://github.com/OpenDAoC/opendaoc-accountmanager/pkgs/container/opendaoc-accountmanager) and can be pulled with:
 
-You can build the image yourself with the provided `Dockerfile`.  
-An example `docker-compose.yml` is available in the repository.
+```bash
+docker pull ghcr.io/opendaoc/opendaoc-accountmanager:latest
+```
 
+Alternatively, can build the image yourself with the provided `Dockerfile`.  
+
+An example `docker-compose.yml` is available in the repository.  
+Remember to reverse proxy the container with a web server like Nginx or Caddy.
+
+#### Environment Variables in Docker
+To inject env vars to Next.js applications we need to replace them using the `entrypoint.sh` script.  
+If your not using the provided `docker-compose.yml`, make sure to set the environment variables. 
 
 ## Learn More
 For more details on Next.js, the framework used in this project:

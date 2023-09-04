@@ -75,8 +75,8 @@ const DiscordCallback = () => {
         }
 
       } catch (error) {
-        console.error('Error during Discord OAuth:', error);
         router.push('/');
+        toast.error('Error during Discord OAuth. Please try again.');
       }
     };
 

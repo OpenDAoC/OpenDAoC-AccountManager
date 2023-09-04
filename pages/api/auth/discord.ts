@@ -8,10 +8,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const { publicRuntimeConfig } = getConfig();
 
-  const REDIRECT_URI = encodeURIComponent(`${publicRuntimeConfig.siteUrl}/auth/discord-callback`);
+  // const REDIRECT_URI = encodeURIComponent(`${publicRuntimeConfig.siteUrl}/auth/discord-callback`);
+  const REDIRECT_URI = `${publicRuntimeConfig.siteUrl}/auth/discord-callback`
   const SCOPES = encodeURIComponent('identify email');
 
-  const discordAuthURL = `https://discord.com/api/oauth2/authorize?client_id=${publicRuntimeConfig.DISCORD_CLIENT_ID}&redirect_uri=${publicRuntimeConfig.REDIRECT_URI}&response_type=code&scope=${SCOPES}`;
+  const discordAuthURL = `https://discord.com/api/oauth2/authorize?client_id=${publicRuntimeConfig.DISCORD_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${SCOPES}`;
 
   res.redirect(discordAuthURL);
 }

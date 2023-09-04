@@ -41,6 +41,7 @@ export default function Header() {
       <span className="logo flex items-center">
         <Link href="/">
           <Image
+            loader={()=>publicRuntimeConfig.logoPath}
             src={publicRuntimeConfig.logoPath}
             alt={publicRuntimeConfig.serverName + ' logo'}
             title={publicRuntimeConfig.serverName + ' logo'}
