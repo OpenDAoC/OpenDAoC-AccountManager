@@ -17,7 +17,7 @@ export default function LinkAccount() {
   useEffect(() => {
     if (session && session.user.opendaoc_name) {
       router.replace('/user');
-    }});
+    }}, [session, router]);
 
   const handleCreateSuccess = async () => {
     window.location.href = '/user';

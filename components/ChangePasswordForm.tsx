@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'; // <-- Add useEffect import
+import { useState } from 'react'; 
 import { toast } from "react-hot-toast";
 import { useSession } from "next-auth/react"
 
@@ -24,7 +24,7 @@ export default function ChangePasswordForm({ onPasswordChanged, onCancelClicked 
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ username: opendaoc_name, newPassword: newPassword }),  // TODO: replace with opendaoc_name
+            body: JSON.stringify({ username: opendaoc_name, newPassword: newPassword }),
         })
         .then((response) => response.json())
         .then(data => {

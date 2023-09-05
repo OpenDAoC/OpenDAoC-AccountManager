@@ -15,7 +15,7 @@ export default function Header() {
     root.style.setProperty('--foreground-color', publicRuntimeConfig.theme.foreground);
     root.style.setProperty('--background-light', publicRuntimeConfig.theme.backgroundLight);
     root.style.setProperty('--background-dark', publicRuntimeConfig.theme.backgroundDark);
-  }, []);
+  }, [publicRuntimeConfig.theme]);
 
 
   const handleLogout = async () => {
