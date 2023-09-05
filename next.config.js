@@ -26,7 +26,7 @@ module.exports = {
     DATABASE_NAME: process.env.DATABASE_NAME,
     
     // Password settings
-    PROHIBITED_CHARACTERS: process.env.PROHIBITED_CHARACTERS?.split(",") || [" ","#","&","%",".","!","^","_","-"],
+    PROHIBITED_CHARACTERS: [" ","#","&","%",".","!","^","_","-"],
     MIN_PASSWORD_LENGTH: parseInt(process.env.MIN_PASSWORD_LENGTH),
     MAX_PASSWORD_LENGTH: parseInt(process.env.MAX_PASSWORD_LENGTH),
     

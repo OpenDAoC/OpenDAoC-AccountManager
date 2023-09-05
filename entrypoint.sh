@@ -1,31 +1,42 @@
 #!/bin/bash
-# no verbose
 set +x
-# config
+
 envFilename='.env.production'
-nextFolder='./.next/'
-function apply_path {
-  # read all config file  
-  while IFS= read -r line || [ -n "$line" ]; do
-    # no comment or not empty
-    if [ "${line:0:1}" == "#" ] || [ "${line}" == "" ]; then
-      continue
+
+# Set permissions
+chown -R nextjs:nodejs /app
+chown nextjs:nodejs $envFilename
+
+# Replace values in .env.production with environment variables
+tempFile=$(mktemp)
+while IFS= read -r line || [ -n "$line" ]; do
+    # Skip comments or empty lines
+    if [[ "${line:0:1}" == "#" ]] || [[ -z "$line" ]]; then
+        continue
     fi
-    
-    # split
+
+    # Split the line into name and default value
     configName="$(cut -d'=' -f1 <<<"$line")"
-    configValue="$(cut -d'=' -f2 <<<"$line")"
-    # get system env
-    envValue=$(env | grep "^$configName=" | grep -oe '[^=]*$');
-    
-    # if config found
-    if [ -n "$configValue" ] && [ -n "$envValue" ]; then
-      # replace all
-      echo "Replace: ${configValue} with: ${envValue}"
-      find $nextFolder \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#$configValue#$envValue#g"
+    defaultValue="$(cut -d'=' -f2 <<<"$line")"
+
+    # Get the environment variable value
+    envValue=$(printenv "$configName")
+
+    # If the environment variable is set, replace the default value in .env.production
+    if [[ -n "$envValue" ]]; then
+        echo "Replace: $defaultValue with: $envValue in $envFilename"
+        printf "%s\n" "$line" | sed "s#^$configName=$defaultValue#$configName=$(printf '%s' "$envValue" | sed 's/[\/&]/\\&/g')#" >> "$tempFile"
+    else
+        printf "%s\n" "$line" >> "$tempFile"
     fi
-  done < $envFilename
-}
-apply_path
-echo "Starting Nextjs"
-exec "$@"
+done < $envFilename
+
+# Replace the contents of .env.production with the modified temp file
+cat "$tempFile" > "$envFilename"
+rm "$tempFile"
+
+# Build the site as the nextjs user
+su -s /bin/sh -c "npm run build" nextjs
+
+# Start the Next.js app as nextjs user
+su -s /bin/sh -c "exec node_modules/.bin/next start" nextjs

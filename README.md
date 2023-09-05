@@ -28,7 +28,6 @@ To set up the OpenDAoC Account Manager, copy `.env.example` to `.env` and adjust
   - `DATABASE_NAME`: Database name.
 
 - **Password Settings**:
-  - `PROHIBITED_CHARACTERS`: Prohibited characters for passwords.
   - `MIN_PASSWORD_LENGTH`: Minimum password length.
   - `MAX_PASSWORD_LENGTH`: Maximum password length.
 
