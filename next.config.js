@@ -5,7 +5,6 @@ module.exports = {
   publicRuntimeConfig: {
     // General settings
     serverName: process.env.SERVER_NAME,
-    siteUrl: process.env.SITE_URL,
     siteTitle: process.env.SITE_TITLE,
     siteDescription: process.env.SITE_DESCRIPTION,
     siteFooter: process.env.SITE_FOOTER,
@@ -27,13 +26,16 @@ module.exports = {
     DATABASE_NAME: process.env.DATABASE_NAME,
     
     // Password settings
-    ENCRYPTION_KEY: process.env.ENCRYPTION_KEY, // 32 characters, generated with `openssl rand -hex 16`
-    PROHIBITED_CHARACTERS: process.env.PROHIBITED_CHARACTERS?.split(",") || [" ","#","&","%",".","!","^","_","-"].split(","),
+    PROHIBITED_CHARACTERS: [" ","#","&","%",".","!","^","_","-"],
     MIN_PASSWORD_LENGTH: parseInt(process.env.MIN_PASSWORD_LENGTH),
     MAX_PASSWORD_LENGTH: parseInt(process.env.MAX_PASSWORD_LENGTH),
     
     // Discord settings
     DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
     DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
+
+    // NextAuth settings
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   }
 }

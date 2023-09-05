@@ -1,10 +1,10 @@
-import { useRouter } from 'next/router';
 import getConfig from 'next/config'
+import { signIn } from 'next-auth/react';
 
 export default function LoginForm() {
-  const router = useRouter();
+
   const handleDiscordLogin = () => {
-    router.push('/api/auth/discord'); // Redirect to initiate the Discord OAuth2 flow
+    signIn('discord');
   };
 
   const { publicRuntimeConfig } = getConfig();

@@ -3,6 +3,7 @@ import connection from '@/utils/db';
 import { containsProhibitedCharacters, cryptPassword } from '@/utils/auth';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
+
   if (req.method !== 'POST') {
     return res.status(405).end();
   }
@@ -29,6 +30,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.status(200).json({ success: false, message: 'Internal server error' });
     }
 
-    return res.status(200).json({ success: true, message: 'Password updated successfully' });
+    return res.status(200).json({ success: true, message: 'Password updated successfully!' });
   });
 }

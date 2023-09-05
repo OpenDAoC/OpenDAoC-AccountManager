@@ -1,8 +1,6 @@
-import { useState, useEffect } from 'react'; // <-- Add useEffect import
-import axios from 'axios';
-import { useUser } from '@/contexts/UserContext';
+import { useState } from 'react'; 
 import { toast } from "react-hot-toast";
-
+import { useSession } from "next-auth/react"
 
 interface ChangePasswordFormProps {
   onPasswordChanged: () => void;
@@ -12,27 +10,32 @@ interface ChangePasswordFormProps {
 export default function ChangePasswordForm({ onPasswordChanged, onCancelClicked }: ChangePasswordFormProps) {
     const [newPassword, setNewPassword] = useState('');
     const [isChanging, setIsChanging] = useState(false);
-    const [messageTimeout, setMessageTimeout] = useState<NodeJS.Timeout | null>(null); // New state for the timeout
-    const { user } = useUser();
 
-    useEffect(() => {
-        return () => {
-            // Cleanup the timeout when the component is unmounted
-            if (messageTimeout) {
-                clearTimeout(messageTimeout);
-            }
-        };
-    }, [messageTimeout]);
+    const { data: session } = useSession()
 
 
     const handleChangePassword = async () => {
         setIsChanging(true);
-        const response = await axios.post('/api/opendaoc/update-password', { username: user && user.username, newPassword });
-        if (response.data.success) {
-            toast.success(response.data.message);
-        } else {
-            toast.error(response.data.message);
-        }
+
+        const opendaoc_name = session?.user.opendaoc_name;
+
+        fetch('/api/opendaoc/update-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username: opendaoc_name, newPassword: newPassword }),
+        })
+        .then((response) => response.json())
+        .then(data => {
+            if (data.success) {
+                toast.success(data.message);
+                onPasswordChanged();
+            } else {
+                toast.error(data.message);
+            }
+          })
+
         setIsChanging(false); // Reset the changing state
     };
 
@@ -43,9 +46,11 @@ export default function ChangePasswordForm({ onPasswordChanged, onCancelClicked 
             <form>
                 <input 
                     type="password" 
-                    placeholder="New Password" 
+                    placeholder="New Password"
+                    autoComplete='on'
                     value={newPassword} 
                     hidden={isChanging}
+                    autoFocus
                     onChange={(e) => setNewPassword(e.target.value)} 
                     className="border p-3 rounded text-black mb-4 w-full"
                 />

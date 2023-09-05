@@ -1,5 +1,7 @@
 import crypto from 'crypto';
 import getConfig from 'next/config';
+import connection from '@/utils/db';
+import mysql from 'mysql2';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -43,8 +45,35 @@ export function cryptPassword(pass: string): string {
 export function containsProhibitedCharacters(password: string): boolean {
     for (let char of publicRuntimeConfig.PROHIBITED_CHARACTERS) {
       if (password.includes(char)) {
+        console.log ("Password contains prohibited character: " + char);
         return true;
       }
     }
     return false;
 };
+
+export function getAccountFromDiscord(discord_id: string | undefined): Promise<string | null> {
+    return new Promise((resolve, reject) => {
+        if (discord_id === undefined) {
+            resolve(null);
+            return;
+        }
+
+        // Check if the user already exists in the database
+        connection.query('SELECT * FROM account WHERE DiscordID = ?', [discord_id], (err, results) => {
+            if (err) {
+                console.error(err);
+                reject(err);
+                return;
+            }
+
+            if (Array.isArray(results) && results.length > 0) {
+                const rows = results as mysql.RowDataPacket[];
+                resolve(rows[0].Name);
+            } else {
+                // If the user doesn't exist, resolve with null
+                resolve(null);
+            }
+        });
+    });
+}

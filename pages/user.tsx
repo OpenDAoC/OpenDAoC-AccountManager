@@ -1,29 +1,28 @@
-import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useUser } from '@/contexts/UserContext';
+import { useSession } from "next-auth/react"
+import { useEffect } from 'react';
 import UserProfile from '@/components/UserProfile';
 import Layout from '@/components/Layout';
 
 export default function UserPage() {
-    const { user, loading } = useUser();
+    const { data: session, status } = useSession()
     const router = useRouter();
+    
+    const handleChangePasswordClick = () => {
+      router.push('/change-password');
+    };
 
   useEffect(() => {
-    if (!loading) { // Only run this effect when loading is false
-      if (!user || !user.username) {
-        router.replace('/login');
+      if (session && !session.user.opendaoc_name) {
+        router.replace('/link-account');
       }
-    }
-  }, [user, loading]);
 
-  const handleChangePasswordClick = () => {
-    router.push('/change-password');
-  };
+    }, [session, router]);
 
   return (
     <Layout>
     <div className='flex-grow flex flex-col justify-center items-center'>
-      {user && user.username && (
+      {session && session.user.discord_id && session.user.opendaoc_name && ( 
         <>
           <UserProfile />
           <button onClick={handleChangePasswordClick} className="mt-4 bg-yellow-500 text-black px-4 py-2 rounded font-semibold">

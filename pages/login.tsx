@@ -1,19 +1,19 @@
-import { useEffect } from 'react';
+import { useSession } from "next-auth/react"
 import { useRouter } from 'next/router';
-import { useUser } from '@/contexts/UserContext';
+import { useEffect } from 'react';
 import DiscordLoginForm from '@/components/DiscordLoginForm';
 import Layout from '@/components/Layout';
 
 
 export default function Login() {
-  const { user } = useUser();
+  const { data: session, status } = useSession()
   const router = useRouter();
 
   useEffect(() => {
-    if (user && user.username) {
-      router.replace('/user');
+    if (session) { 
+        router.replace('/user');
     }
-  }, [user]);
+  }, [session, router]);
 
   return (
     <Layout>
