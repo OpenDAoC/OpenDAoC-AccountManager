@@ -1,24 +1,20 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useUser } from '@/contexts/UserContext';
+import { useSession } from "next-auth/react"
 
 export default function Home() {
-  const { user, loading } = useUser();
   const router = useRouter();
-  
+  const { data: session } = useSession()
+
   useEffect(() => {
-    if (!loading) { // Only redirect once the loading state is false
-      if (user && user.username && user.discordName) {
+      if (session) {
         router.replace('/user');
       } 
-      else if (user && !user.username && user.discordName) {
-        router.replace('/link-account');
-      }
       else {
         router.replace('/login');
       }
-    }
-  }, [user, loading]);
+    }, [session, router]);
+
 
   return null; // You can return null or a loading spinner while redirecting
 }

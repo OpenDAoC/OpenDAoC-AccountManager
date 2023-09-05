@@ -1,34 +1,32 @@
-import { useState } from 'react';
+import getConfig from 'next/config'
+import { toast } from 'react-hot-toast';
+import { useSession } from "next-auth/react"
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useUser } from '@/contexts/UserContext';
 import Layout from '@/components/Layout';
 import { LinkAccountForm } from '@/components/LinkAccountForm';
 import { CreateAccountForm } from '@/components/CreateAccountForm';
-import { setCookie } from '@/utils/cookie';
-import getConfig from 'next/config'
-import { toast } from 'react-hot-toast';
+
 
 export default function LinkAccount() {
   const [activeSection, setActiveSection] = useState<'link' | 'create'>('link');
-  const { setUser } = useUser();
   const router = useRouter();
   const { publicRuntimeConfig } = getConfig()
+  const { data: session } = useSession()
+  
+  useEffect(() => {
+    if (session && session.user.opendaoc_name) {
+      router.replace('/user');
+    }});
 
-  const handleCreateSuccess = (username: string, discordId: string | null, discordName: string | null) => {
+  const handleCreateSuccess = async () => {
+    window.location.href = '/user';
     toast.success("Account created and linked successfully!");
-    handleSuccess(username, discordId, discordName);
   };
 
-  const handleLinkSuccess = (username: string, discordId: string | null, discordName: string | null) => {
+  const handleLinkSuccess = async () => {
+    window.location.href = '/user';
     toast.success("Account linked successfully!");
-    handleSuccess(username, discordId, discordName);
-  };
-
-  const handleSuccess = (username: string, discordId: string | null, discordName: string | null) => {
-    const userData = { username, discordId, discordName };
-    setUser(userData); // Set the user data in the context
-    setCookie(userData); // Set the cookie
-    router.push('/'); // Redirect to the home page
   };
 
   const handleError = (errorMessage: string) => {

@@ -7,9 +7,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(405).end();
   }
 
-  const { userId, password, discordId, discordName } = req.body;
+  const { username, password, discordId, discordName } = req.body;
 
-  if (userId.length === 0) {
+  if (username.length === 0) {
     return res.status(200).json({ success: false, message: 'Username cannot be empty.' });
   }
 
@@ -23,7 +23,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
   const passwordHash = cryptPassword(password);
 
-  connection.query('SELECT * FROM account WHERE Name = ? and Password = ?', [userId, passwordHash], (err, results) => {
+  connection.query('SELECT * FROM account WHERE Name = ? and Password = ?', [username, passwordHash], (err, results) => {
     if (err) {
       console.error(err);
       return res.status(200).json({ success: false, message: 'Internal server error' });
@@ -34,7 +34,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     } 
     else
     {
-      connection.query('UPDATE account SET DiscordID = ?, DiscordName = ?, LastTimeRowUpdated = NOW() WHERE Name = ?', [discordId, discordName, userId], (err, results) => {
+      connection.query('UPDATE account SET DiscordID = ?, DiscordName = ?, LastTimeRowUpdated = NOW() WHERE Name = ?', [discordId, discordName, username], (err, results) => {
         if (err) {
           console.error(err);
           return res.status(200).json({ success: false, message: 'Internal server error' });

@@ -1,36 +1,33 @@
 import { useState } from 'react';
-import { useUser } from '@/contexts/UserContext';
-import axios from 'axios';
+import { useSession } from "next-auth/react"
 
 interface CreateAccountFormProps {
-  onCreateSuccess: (username: string, discordId: string | null, discordName: string | null) => void;
+  onCreateSuccess: () => void;
   onCreateError: (message: string) => void;
 }
 
 export const CreateAccountForm: React.FC<CreateAccountFormProps> = ({ onCreateSuccess, onCreateError }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const {user} = useUser();
-  const discordId = user && user.discordId;
-  const discordName = user && user.discordName;
+  const { data: session } = useSession()
 
   const handleCreateAccount = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
-    const response = await axios.post('/api/opendaoc/create-account', {
-      username,
-      password,
-      discordId,
-      discordName
-    });
 
-    const data = response.data;
-
-    if (data.success) {
-      onCreateSuccess(username, discordId, discordName);
-    } else {
-      onCreateError(data.message);
-    }
+    await fetch('/api/opendaoc/create-account', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({username, password: password, discordId: session?.user.discord_id, discordName: session?.user.discord_name }),
+    })
+    .then((response) => response.json())
+    .then(data => {
+        if (data.success) {
+            onCreateSuccess();
+        } else {
+            onCreateError(data.message);
+        }})
   };
 
   return (
@@ -42,6 +39,7 @@ export const CreateAccountForm: React.FC<CreateAccountFormProps> = ({ onCreateSu
           name="username"
           placeholder='Username'
           autoComplete="on"
+          autoFocus
           className="form-control w-full p-2 border rounded bg-white text-black"
           value={username}
           onChange={(e) => setUsername(e.target.value)}

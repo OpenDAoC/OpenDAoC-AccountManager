@@ -8,7 +8,6 @@ To set up the OpenDAoC Account Manager, copy `.env.example` to `.env` and adjust
 
 - **General Settings**:
   - `SERVER_NAME`: Name of your server (e.g., "OpenDAoC").
-  - `SITE_URL`: URL of your site (e.g., "https://account.opendaoc.com").
   - `SITE_TITLE`: Title of your site.
   - `SITE_DESCRIPTION`: Description of your site.
   - `SITE_FOOTER`: Footer of your site.
@@ -29,7 +28,6 @@ To set up the OpenDAoC Account Manager, copy `.env.example` to `.env` and adjust
   - `DATABASE_NAME`: Database name.
 
 - **Password Settings**:
-  - `ENCRYPTION_KEY`: Used for encryption. Ensure it's random.
   - `PROHIBITED_CHARACTERS`: Prohibited characters for passwords.
   - `MIN_PASSWORD_LENGTH`: Minimum password length.
   - `MAX_PASSWORD_LENGTH`: Maximum password length.
@@ -37,6 +35,10 @@ To set up the OpenDAoC Account Manager, copy `.env.example` to `.env` and adjust
 - **Discord Settings**:
   - `DISCORD_CLIENT_ID`: Discord client ID.
   - `DISCORD_CLIENT_SECRET`: Discord client secret.
+
+- **Next Auth Settings**
+  - `NEXTAUTH_SECRET`: Used for encryption. Ensure it's random.  Generated with `openssl rand -hex 16`
+  - `NEXTAUTH_URL`: : URL of your site (e.g., "https://account.opendaoc.com").
 
 Make sure to replace the example values with your actual configurations.
 
@@ -81,5 +83,5 @@ If your not using the provided `docker-compose.yml`, make sure to set the enviro
 ## Learn More
 For more details on Next.js, the framework used in this project:
 
-[Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+[Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.  
 [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.

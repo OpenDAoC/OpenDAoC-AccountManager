@@ -4,7 +4,6 @@ set +x
 # config
 envFilename='.env.production'
 nextFolder='./.next/'
-
 function apply_path {
   # read all config file  
   while IFS= read -r line || [ -n "$line" ]; do
@@ -23,9 +22,7 @@ function apply_path {
     if [ -n "$configValue" ] && [ -n "$envValue" ]; then
       # replace all
       echo "Replace: ${configValue} with: ${envValue}"
-      find $nextFolder \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#$(printf '%s' "$configValue" | sed 's/[\/&]/\\&/g')#$(printf '%s' "$envValue" | sed 's/[\/&]/\\&/g')#g"
-    else
-        echo "Not found: ${configName}"
+      find $nextFolder \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#$configValue#$envValue#g"
     fi
   done < $envFilename
 }

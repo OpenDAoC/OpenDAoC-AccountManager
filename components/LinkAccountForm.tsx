@@ -1,36 +1,35 @@
 import { useState } from 'react';
-import { useUser } from '@/contexts/UserContext';
-import axios from 'axios';
+import { useSession } from "next-auth/react"
 
 interface LinkAccountFormProps {
-  onLinkSuccess: (username: string, discordId: string | null, discordName: string | null) => void;
+  onLinkSuccess: () => void;
   onLinkError: (message: string) => void;
 }
 
 export const LinkAccountForm: React.FC<LinkAccountFormProps> = ({ onLinkSuccess, onLinkError }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { user } = useUser();
-  const discordId = user && user.discordId;
-  const discordName = user && user.discordName;
+
+  const { data: session } = useSession()
 
   const handleLinkAccount = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    const response = await axios.post('/api/opendaoc/link-account', {
-      userId: username,
-      password,
-      discordId,
-      discordName
-    });
 
-    const data = response.data;
+    await fetch('/api/opendaoc/link-account', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({username, password: password, discordId: session?.user.discord_id, discordName: session?.user.discord_name }),
+    })
+    .then((response) => response.json())
+    .then(data => {
+        if (data.success) {
+            onLinkSuccess();
+        } else {
+            onLinkError(data.message);
+        }})
 
-    if (data.success) {
-      onLinkSuccess(username, discordId, discordName);
-    } else {
-      onLinkError(data.message);
-    }
   };
 
   return (
@@ -42,6 +41,7 @@ export const LinkAccountForm: React.FC<LinkAccountFormProps> = ({ onLinkSuccess,
           name="username"
           placeholder='Username'
           autoComplete="on"
+          autoFocus
           className="form-control w-full p-2 border rounded bg-white text-black"
           value={username}
           onChange={(e) => setUsername(e.target.value)}

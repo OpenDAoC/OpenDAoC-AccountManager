@@ -1,22 +1,12 @@
-import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useUser } from '@/contexts/UserContext';
 import ChangePasswordForm from '@/components/ChangePasswordForm';
 import Layout from '@/components/Layout';
+import { useSession } from "next-auth/react"
 
 export default function ChangePasswordPage() {
-  const { user, loading } = useUser();
   const router = useRouter();
-
-  useEffect(() => {
-    if (!loading) { // Only run this effect when loading is false
-      if (!user || !user.username) {
-        router.replace('/login');
-      }
-    }
-  }, [user, loading]);
+  const { data: session } = useSession()
   
-
   const handlePasswordChanged = () => {
     router.push('/');
   };
@@ -28,7 +18,7 @@ export default function ChangePasswordPage() {
   return (
     <Layout>
         <div>
-            {user && user.username && <ChangePasswordForm onPasswordChanged={handlePasswordChanged} onCancelClicked={handleCancel} />}
+            {session && session.user.opendaoc_name && <ChangePasswordForm onPasswordChanged={handlePasswordChanged} onCancelClicked={handleCancel} />}
         </div>
     </Layout>
   );
