@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import getConfig from 'next/config';
-import connection from '@/utils/db';
+import pool from '@/utils/db';
 import mysql from 'mysql2';
 
 const { publicRuntimeConfig } = getConfig();
@@ -60,7 +60,7 @@ export function getAccountFromDiscord(discord_id: string | undefined): Promise<s
         }
 
         // Check if the user already exists in the database
-        connection.query('SELECT * FROM account WHERE DiscordID = ?', [discord_id], (err, results) => {
+        pool.query('SELECT * FROM account WHERE DiscordID = ?', [discord_id], (err, results) => {
             if (err) {
                 console.error(err);
                 reject(err);

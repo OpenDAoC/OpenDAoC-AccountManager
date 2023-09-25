@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import connection from '@/utils/db';
+import pool from '@/utils/db';
 import { containsProhibitedCharacters, cryptPassword } from '@/utils/auth';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -24,7 +24,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
   const passwordHash = cryptPassword(newPassword);
 
-  connection.query('UPDATE account SET Password = ? WHERE Name = ?', [passwordHash, username], (err, results) => {
+  pool.query('UPDATE account SET Password = ? WHERE Name = ?', [passwordHash, username], (err, results) => {
     if (err) {
       console.error(err);
       return res.status(200).json({ success: false, message: 'Internal server error' });

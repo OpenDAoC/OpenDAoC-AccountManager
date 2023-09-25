@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import connection from '@/utils/db';
+import pool from '@/utils/db';
 import getConfig from 'next/config'
 import { containsProhibitedCharacters, cryptPassword } from '@/utils/auth';
 
@@ -29,7 +29,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   // Check if the user already exists in the database
-  connection.query('SELECT * FROM account WHERE Name = ?', [username], (err, results) => {
+  pool.query('SELECT * FROM account WHERE Name = ?', [username], (err, results) => {
     if (err) {
       console.error(err);
       return res.status(200).json({ success: false, message: 'Internal server error' });
@@ -42,7 +42,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
      {
       const passwordHash = cryptPassword(password);
       // User doesn't exist, create a new account
-      connection.query('INSERT INTO account (Account_ID, Name, Password, PrivLevel, CreationDate, LastTimeRowUpdated, DiscordID, DiscordName) VALUES (?, ?, ?, 1, NOW(), NOW(), ?, ?)', [username, username, passwordHash, discordId, discordName], (insertErr) => {
+      pool.query('INSERT INTO account (Account_ID, Name, Password, PrivLevel, CreationDate, LastTimeRowUpdated, DiscordID, DiscordName) VALUES (?, ?, ?, 1, NOW(), NOW(), ?, ?)', [username, username, passwordHash, discordId, discordName], (insertErr) => {
         if (insertErr) {
           console.error(insertErr);
           return res.status(200).json({ success: false, message: 'Failed to create account' });

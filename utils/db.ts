@@ -3,18 +3,15 @@ import getConfig from 'next/config';
 
 const { publicRuntimeConfig } = getConfig();
 
-const connection = mysql.createConnection({
+// Create a connection pool
+const pool = mysql.createPool({
   host: publicRuntimeConfig.DATABASE_HOST,
   user: publicRuntimeConfig.DATABASE_USER,
   password: publicRuntimeConfig.DATABASE_PASSWORD,
   database: publicRuntimeConfig.DATABASE_NAME,
+  waitForConnections: true,
+  connectionLimit: 10, // You can adjust this value based on your needs
+  queueLimit: 0
 });
 
-connection.connect((err) => {
-  if (err) {
-    console.error("Failed to connect to the database:", err);
-    throw err;
-  }
-});
-
-export default connection;
+export default pool;

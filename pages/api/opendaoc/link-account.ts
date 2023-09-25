@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import connection from '@/utils/db';
+import pool from '@/utils/db';
 import { containsProhibitedCharacters, cryptPassword } from '@/utils/auth';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -23,7 +23,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
   const passwordHash = cryptPassword(password);
 
-  connection.query('SELECT * FROM account WHERE Name = ? and Password = ?', [username, passwordHash], (err, results) => {
+  pool.query('SELECT * FROM account WHERE Name = ? and Password = ?', [username, passwordHash], (err, results) => {
     if (err) {
       console.error(err);
       return res.status(200).json({ success: false, message: 'Internal server error' });
@@ -34,7 +34,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     } 
     else
     {
-      connection.query('UPDATE account SET DiscordID = ?, DiscordName = ?, LastTimeRowUpdated = NOW() WHERE Name = ?', [discordId, discordName, username], (err, results) => {
+      pool.query('UPDATE account SET DiscordID = ?, DiscordName = ?, LastTimeRowUpdated = NOW() WHERE Name = ?', [discordId, discordName, username], (err, results) => {
         if (err) {
           console.error(err);
           return res.status(200).json({ success: false, message: 'Internal server error' });
